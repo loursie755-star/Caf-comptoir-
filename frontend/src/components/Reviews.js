@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Star, Quote, ThumbsUp, MessageCircle } from 'lucide-react';
-import { reviews } from '../mockData';
+import { reviewsAPI } from '../services/api';
 
 const Reviews = () => {
   const [currentReview, setCurrentReview] = useState(0);
