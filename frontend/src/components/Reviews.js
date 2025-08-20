@@ -234,7 +234,7 @@ const Reviews = () => {
                   {renderStars(review.rating)}
                 </div>
                 <span className="text-sm" style={{ color: 'var(--color-text-light)' }}>
-                  {review.date}
+                  {formatDate(review.createdAt)}
                 </span>
               </div>
               
