@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, Users, User, Phone, Mail, CheckCircle } from 'lucide-react';
+import { Calendar, Clock, Users, User, Phone, Mail, CheckCircle, AlertCircle } from 'lucide-react';
 import { restaurantInfo } from '../mockData';
+import { reservationAPI, handleAPIError } from '../services/api';
 
 const Reservation = () => {
   const [formData, setFormData] = useState({
