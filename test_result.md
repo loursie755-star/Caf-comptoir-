@@ -111,11 +111,14 @@ backend:
     file: "/app/backend/api/reservations.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "API créée avec validation des données, gestion des erreurs et statuts de réservation"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTÉ - API fonctionnelle: création réservation, validation date future, validation email, récupération liste. Tous les endpoints opérationnels avec données réalistes."
 
   - task: "API Contact"
     implemented: true
@@ -123,11 +126,14 @@ backend:
     file: "/app/backend/api/contact.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "API pour messages de contact avec gestion des statuts"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTÉ - API fonctionnelle: envoi message, validation email, récupération liste admin. Gestion correcte des statuts et validation des données."
 
   - task: "API Avis Clients"
     implemented: true
@@ -135,11 +141,14 @@ backend:
     file: "/app/backend/api/reviews.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "API avec approbation des avis et CRUD complet"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTÉ - API fonctionnelle: création avis, validation rating 1-5, filtre avis approuvés, données de test françaises authentiques. 4 avis de test présents."
 
   - task: "API Menu"
     implemented: true
@@ -147,11 +156,14 @@ backend:
     file: "/app/backend/api/menu.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "API menu avec catégories et gestion de disponibilité"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTÉ - API fonctionnelle: liste plats, catégories, filtrage par catégorie. Menu français traditionnel complet avec 5 plats authentiques (rumsteck, canard, féra, reblochon, menu enfant)."
 
   - task: "Modèles de données MongoDB"
     implemented: true
