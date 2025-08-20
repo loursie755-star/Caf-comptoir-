@@ -184,6 +184,16 @@ const Reservation = () => {
               </h3>
 
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Affichage des erreurs API */}
+                {apiError && (
+                  <div className="bg-red-50 border-2 border-red-200 rounded-lg p-4 flex items-start gap-3">
+                    <AlertCircle className="text-red-500 flex-shrink-0 mt-0.5" size={20} />
+                    <div>
+                      <h4 className="font-medium text-red-800">Erreur de réservation</h4>
+                      <p className="text-sm text-red-600 mt-1">{apiError}</p>
+                    </div>
+                  </div>
+                )}
                 {/* Date et heure */}
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
