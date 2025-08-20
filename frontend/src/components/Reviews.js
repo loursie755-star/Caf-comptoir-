@@ -61,8 +61,40 @@ const Reviews = () => {
     ));
   };
 
-  const averageRating = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+  const averageRating = reviews.length > 0 
+    ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length 
+    : 0;
   const totalReviews = reviews.length;
+
+  // Formatage de la date
+  const formatDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffTime = Math.abs(now - date);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      if (diffDays === 1) return "Il y a 1 jour";
+      if (diffDays < 7) return `Il y a ${diffDays} jours`;
+      if (diffDays < 30) return `Il y a ${Math.ceil(diffDays / 7)} semaine(s)`;
+      return `Il y a ${Math.ceil(diffDays / 30)} mois`;
+    } catch {
+      return "Récemment";
+    }
+  };
+
+  if (loading) {
+    return (
+      <section id="avis" className="section bg-cream">
+        <div className="container">
+          <div className="text-center">
+            <div className="inline-block w-8 h-8 border-4 border-yellow-600 border-r-transparent rounded-full animate-spin"></div>
+            <p className="mt-4">Chargement des avis clients...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="avis" className="section bg-cream">
