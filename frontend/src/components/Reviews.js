@@ -4,6 +4,44 @@ import { reviewsAPI } from '../services/api';
 
 const Reviews = () => {
   const [currentReview, setCurrentReview] = useState(0);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Charger les avis depuis l'API
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        setLoading(true);
+        const reviewsData = await reviewsAPI.getAll(true);
+        setReviews(reviewsData);
+      } catch (error) {
+        console.error('Erreur lors du chargement des avis:', error);
+        setError('Impossible de charger les avis clients');
+        // Utiliser des avis de fallback en cas d'erreur
+        setReviews([
+          {
+            id: "1",
+            name: "Sophie L.",
+            rating: 5,
+            comment: "Un vrai régal, plats copieux et ambiance conviviale ! L'équipe est aux petits soins.",
+            createdAt: "2024-12-01T12:00:00"
+          },
+          {
+            id: "2",
+            name: "Marc D.",
+            rating: 5,
+            comment: "Le meilleur restaurant français de Montbrison, je recommande vivement. Les produits sont frais et locaux.",
+            createdAt: "2024-11-20T14:30:00"
+          }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, []);
 
   const nextReview = () => {
     setCurrentReview((prev) => (prev + 1) % reviews.length);
