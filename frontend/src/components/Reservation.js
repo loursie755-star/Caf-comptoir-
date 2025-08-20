@@ -75,28 +75,44 @@ const Reservation = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setApiError(null);
     
     if (validateForm()) {
-      // Simulation de l'envoi
-      console.log('Données de réservation:', formData);
-      setIsSubmitted(true);
+      setIsLoading(true);
       
-      // Reset après 5 secondes
-      setTimeout(() => {
-        setIsSubmitted(false);
-        setFormData({
-          date: '',
-          time: '',
-          guests: '2',
-          firstName: '',
-          lastName: '',
-          phone: '',
-          email: '',
-          message: ''
-        });
-      }, 5000);
+      try {
+        // Appel API pour créer la réservation
+        const response = await reservationAPI.create(formData);
+        
+        if (response.success) {
+          setIsSubmitted(true);
+          
+          // Reset après 5 secondes
+          setTimeout(() => {
+            setIsSubmitted(false);
+            setFormData({
+              date: '',
+              time: '',
+              guests: '2',
+              firstName: '',
+              lastName: '',
+              phone: '',
+              email: '',
+              message: ''
+            });
+          }, 5000);
+        } else {
+          setApiError(response.message || 'Erreur lors de la réservation');
+        }
+      } catch (error) {
+        const errorInfo = handleAPIError(error);
+        setApiError(errorInfo.message);
+        console.error('Erreur réservation:', error);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
