@@ -66,6 +66,19 @@ const Menu = () => {
     prix: "28€"
   };
 
+  if (loading) {
+    return (
+      <section id="menu" className="section">
+        <div className="container">
+          <div className="text-center">
+            <div className="inline-block w-8 h-8 border-4 border-yellow-600 border-r-transparent rounded-full animate-spin"></div>
+            <p className="mt-4">Chargement du menu...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="menu" className="section">
       <div className="container">
