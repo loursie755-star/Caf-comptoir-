@@ -10,6 +10,10 @@ from typing import List
 import uuid
 from datetime import datetime
 
+# Import API routers and database functions
+from api import reservations, contact, reviews, menu
+from database import init_database, close_database
+from models import RestaurantInfo
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -17,16 +21,19 @@ load_dotenv(ROOT_DIR / '.env')
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+db = client[os.environ.get('DB_NAME', 'cafe_comptoir')]
 
 # Create the main app without a prefix
-app = FastAPI()
+app = FastAPI(
+    title="Café Comptoir API",
+    description="API pour le restaurant Café Comptoir à Montbrison",
+    version="1.0.0"
+)
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
-
-# Define Models
+# Define Models for backwards compatibility
 class StatusCheck(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     client_name: str
@@ -35,11 +42,22 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
-# Add your routes to the router instead of directly to app
+# Basic routes
 @api_router.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {
+        "message": "API Café Comptoir - Montbrison",
+        "restaurant": "Café Comptoir",
+        "location": "Montbrison, France",
+        "status": "operational"
+    }
 
+@api_router.get("/info", response_model=RestaurantInfo)
+async def get_restaurant_info():
+    """Récupérer les informations du restaurant"""
+    return RestaurantInfo()
+
+# Legacy status routes (for backwards compatibility)
 @api_router.post("/status", response_model=StatusCheck)
 async def create_status_check(input: StatusCheckCreate):
     status_dict = input.dict()
@@ -52,7 +70,13 @@ async def get_status_checks():
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
-# Include the router in the main app
+# Include all API routers
+api_router.include_router(reservations.router)
+api_router.include_router(contact.router)
+api_router.include_router(reviews.router) 
+api_router.include_router(menu.router)
+
+# Include the main router in the app
 app.include_router(api_router)
 
 app.add_middleware(
