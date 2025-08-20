@@ -16,7 +16,9 @@ const Reservation = () => {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState(null);
 
   // Options de créneaux horaires
   const timeSlots = [
