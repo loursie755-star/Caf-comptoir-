@@ -358,9 +358,17 @@ const Reservation = () => {
                 {/* Bouton de soumission */}
                 <button
                   type="submit"
-                  className="btn-primary w-full text-lg py-4"
+                  disabled={isLoading}
+                  className="btn-primary w-full text-lg py-4 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Confirmer ma réservation
+                  {isLoading ? (
+                    <>
+                      <div className="inline-block w-4 h-4 border-2 border-white border-r-transparent rounded-full animate-spin mr-2"></div>
+                      Envoi en cours...
+                    </>
+                  ) : (
+                    'Confirmer ma réservation'
+                  )}
                 </button>
 
                 <p className="text-sm text-center" style={{ color: 'var(--color-text-light)' }}>
