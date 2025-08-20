@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChefHat, Clock, Euro } from 'lucide-react';
-import { menuItems } from '../mockData';
+import { menuAPI } from '../services/api';
 
 const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
