@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Heart, ChefHat } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Heart, ChefHat, Calendar } from 'lucide-react';
 import { restaurantInfo } from '../mockData';
 
 const Footer = () => {
