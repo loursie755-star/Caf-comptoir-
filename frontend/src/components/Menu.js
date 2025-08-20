@@ -4,14 +4,56 @@ import { menuAPI } from '../services/api';
 
 const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [menuItems, setMenuItems] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const categories = [
-    { id: 'all', label: 'Tous les plats' },
-    { id: 'Plats principaux', label: 'Plats principaux' },
-    { id: 'Poissons', label: 'Poissons' },
-    { id: 'Spécialités', label: 'Spécialités' },
-    { id: 'Enfants', label: 'Menu Enfant' }
-  ];
+  // Charger le menu depuis l'API
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        setLoading(true);
+        const [menuData, categoriesData] = await Promise.all([
+          menuAPI.getAll(),
+          menuAPI.getCategories()
+        ]);
+        
+        setMenuItems(menuData);
+        
+        // Construire la liste des catégories avec "all"
+        const allCategories = [
+          { id: 'all', label: 'Tous les plats' },
+          ...categoriesData.categories.map(cat => ({ id: cat, label: cat }))
+        ];
+        setCategories(allCategories);
+        
+      } catch (error) {
+        console.error('Erreur lors du chargement du menu:', error);
+        setError('Impossible de charger le menu');
+        
+        // Données de fallback en cas d'erreur
+        setMenuItems([
+          {
+            id: "1",
+            name: "Pavé de rumsteck grillé à la plancha",
+            description: "avec pommes de terre rôties et légumes frais de saison",
+            price: "22€",
+            category: "Plats principaux"
+          }
+        ]);
+        
+        setCategories([
+          { id: 'all', label: 'Tous les plats' },
+          { id: 'Plats principaux', label: 'Plats principaux' }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMenu();
+  }, []);
 
   const filteredItems = selectedCategory === 'all' 
     ? menuItems 
