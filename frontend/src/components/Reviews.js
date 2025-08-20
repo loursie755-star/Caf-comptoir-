@@ -177,7 +177,7 @@ const Reviews = () => {
                     {reviews[currentReview].name}
                   </h4>
                   <p className="text-sm" style={{ color: 'var(--color-text-light)' }}>
-                    {reviews[currentReview].date}
+                    {formatDate(reviews[currentReview].createdAt)}
                   </p>
                 </div>
               </div>
